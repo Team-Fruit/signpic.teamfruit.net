@@ -1,23 +1,18 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+  <b-row>
+    <b-col sm="4">
+      <img src="../assets/logo.png" class="img-fluid mx-auto d-block" />
+    </b-col>
+    <b-col sm="8">
+      <h1>{{ msg }}</h1>
+      <h2>The sign tells us how beautiful it is!</h2>
+      <h4>This client-sided mod invites you into a world of image, in both singleplayer and multiplayer. It works out of the box, and will show you a new wonderful world!</h4>
+      <ul class="buttons">
+        <li><b-button size="lg" variant="warning" href="https://minecraft.curseforge.com/projects/signpicture">Download on CurseForge</b-button></li>
+        <li><b-button size="lg" variant="primary" href="https://github.com/Team-Fruit/SignPicture">GitHub</b-button></li>
+      </ul>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -25,16 +20,15 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'SignPicture'
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+h1 {
+  font-size: 64px;
 }
 
 ul {
@@ -47,7 +41,13 @@ li {
   margin: 0 10px;
 }
 
-a {
-  color: #42b983;
+.description {
+  font-size: 24px;
+  list-style: none;
+}
+
+.buttons {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  line-height: 64px;
 }
 </style>
