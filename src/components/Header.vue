@@ -1,5 +1,5 @@
 <template>
-<b-navbar toggleable="md" type="light" variant="light">
+<b-navbar toggleable="md" type="light" variant="light" fixed="top">
     <div class="container">
         <b-navbar-brand href="#">SignPicture</b-navbar-brand>
     </div>
