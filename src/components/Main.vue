@@ -4,7 +4,7 @@
       <img src="../assets/logo.png" class="img-fluid mx-auto d-block" />
     </b-col>
     <b-col sm="8">
-      <h1>{{ msg }}</h1>
+      <h1>SignPicture</h1>
       <h2>The sign tells us how beautiful it is!</h2>
       <h4>This client-sided mod invites you into a world of image, in both singleplayer and multiplayer. It works out of the box, and will show you a new wonderful world!</h4>
       <ul class="buttons">
@@ -17,12 +17,7 @@
 
 <script>
 export default {
-  name: 'hello',
-  data () {
-    return {
-      msg: 'SignPicture'
-    }
-  }
+  name: 'main'
 }
 </script>
 
