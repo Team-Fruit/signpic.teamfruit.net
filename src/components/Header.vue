@@ -1,7 +1,7 @@
 <template>
 <b-navbar toggleable="md" type="light" variant="light" fixed="top">
     <div class="container">
-        <b-navbar-brand href="#">SignPicture</b-navbar-brand>
+        <b-navbar-brand to="/">SignPicture</b-navbar-brand>
     </div>
 </b-navbar>
 </template>
