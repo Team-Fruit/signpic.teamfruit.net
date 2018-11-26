@@ -9,7 +9,7 @@
       <h4>This client-sided mod invites you into a world of image, in both singleplayer and multiplayer. It works out of the box, and will show you a new wonderful world!</h4>
       <ul class="buttons">
         <li><b-button size="lg" variant="warning" href="https://minecraft.curseforge.com/projects/signpicture">Download on CurseForge</b-button></li>
-        <li><b-button size="lg" variant="primary" href="https://github.com/Team-Fruit/SignPicture">GitHub</b-button></li>
+        <li><b-button size="lg" variant="dark" href="https://github.com/Team-Fruit/SignPicture"><font-awesome-icon :icon="{ prefix: 'fab', iconName: 'github' }" /> GitHub</b-button></li>
       </ul>
     </b-col>
   </b-row>
