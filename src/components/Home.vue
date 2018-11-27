@@ -4,7 +4,7 @@
       <b-col sm="4">
         <img src="../assets/logo.png" class="img-fluid mx-auto d-block" />
       </b-col>
-      <b-col sm="8">
+      <b-col sm="8" class="heading">
         <h1>SignPicture</h1>
         <h2>The sign tells us how beautiful it is!</h2>
         <h4>This client-sided mod invites you into a world of image, in both singleplayer and multiplayer. It works out of the box, and will show you a new wonderful world!</h4>
@@ -36,6 +36,10 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
+}
+
+.heading {
+    font-family: 'Rajdhani', sans-serif;
 }
 
 .description {
