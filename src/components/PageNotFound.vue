@@ -10,3 +10,9 @@ export default {
   name: 'PageNotFound'
 }
 </script>
+
+<style>
+h1, h2 {
+    font-family: 'Rajdhani', sans-serif;
+}
+</style>
