@@ -3,7 +3,7 @@
         <b-card>
             <p class="title">Play Count</p>
             <p class="subtitle">Since November 6, 2018</p>
-            <p class="text">{{ playcount }}</p>
+            <p class="text">{{ playcount | numfilter }}</p>
         </b-card>
     </b-container>
 </template>
@@ -15,13 +15,23 @@ export default {
   name: 'Analytics',
   data () {
     return {
-      playcount: null
+      playcount: 0
     }
   },
   mounted () {
     axios
       .get('https://signpic.teamfruit.net/api/playcount')
-      .then(response => (this.playcount = response.data.count.toLocaleString()))
+      .then(response => {
+        this.playcount = response.data.count
+        const ws = new WebSocket('ws://signpic.teamfruit.net/api/ws')
+        ws.onmessage = event => {
+          const data = JSON.parse(event.data)
+          this.playcount += data.playcount
+        }
+      })
+  },
+  filters: {
+    numfilter: value => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 }
 </script>
