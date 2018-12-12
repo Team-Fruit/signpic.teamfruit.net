@@ -15,6 +15,7 @@ import axios from 'axios'
 
 export default {
   name: 'Analytics',
+  title: 'Analytics',
   data () {
     return {
       realtime: false,
