@@ -1,7 +1,9 @@
 <template>
     <b-container>
+        <h2>WIP Page</h2>
         <b-card>
-            <p class="title">Play Count</p>
+            <p v-if="realtime" class="title">Play Count (Real-time)</p>
+            <p v-else class="title">Play Count</p>
             <p class="subtitle">Since November 6, 2018</p>
             <p class="text">{{ playcount | numfilter }}</p>
         </b-card>
@@ -15,6 +17,7 @@ export default {
   name: 'Analytics',
   data () {
     return {
+      realtime: false,
       playcount: 0
     }
   },
@@ -23,7 +26,13 @@ export default {
       .get('https://signpic.teamfruit.net/api/playcount')
       .then(response => {
         this.playcount = response.data.count
-        const ws = new WebSocket('ws://signpic.teamfruit.net/api/ws')
+        const ws = new WebSocket('wss://signpic.teamfruit.net/api/ws')
+        ws.onopen = () => {
+          this.realtime = true
+        }
+        ws.onerror = event => {
+          this.realtime = false
+        }
         ws.onmessage = event => {
           const data = JSON.parse(event.data)
           this.playcount += data.playcount
