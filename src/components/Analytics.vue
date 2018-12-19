@@ -55,7 +55,6 @@ export default {
           this.errored = true
         }
         ws.onmessage = event => {
-          console.log(event.data)
           const data = JSON.parse(event.data)
           this.usercount = data.usercount
           this.playcount = data.playcount
