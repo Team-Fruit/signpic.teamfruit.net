@@ -37,7 +37,7 @@ export default {
         ws.onmessage = event => {
           console.log(event.data)
           const data = JSON.parse(event.data)
-          this.playcount += data.playcount
+          this.playcount = data.playcount
         }
       })
   },
