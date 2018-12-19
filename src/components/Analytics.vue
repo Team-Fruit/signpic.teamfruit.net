@@ -15,7 +15,7 @@ import axios from 'axios'
 
 export default {
   name: 'Analytics',
-  title: 'Analytics',
+  title: 'Analytics - SignPicture',
   data () {
     return {
       realtime: false,
@@ -35,6 +35,7 @@ export default {
           this.realtime = false
         }
         ws.onmessage = event => {
+          console.log(event.data)
           const data = JSON.parse(event.data)
           this.playcount += data.playcount
         }

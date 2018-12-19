@@ -19,7 +19,8 @@
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+  title: 'SignPicture'
 }
 </script>
 
