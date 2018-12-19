@@ -1,80 +1,77 @@
 <template>
     <b-container>
-        <h2>WIP Page</h2>
-        <b-card>
-            <p v-if="realtime" class="title">Play Count (Real-time)</p>
-            <p v-else class="title">Play Count</p>
-            <p class="subtitle">Since November 6, 2018</p>
-            <p class="text">{{ playcount | numfilter }}</p>
-        </b-card>
+        <h2 v-if="realtime">Real-time Analytics (WIP)</h2>
+        <h2 v-else>Analytics (WIP)</h2>
+        <section v-if="errored">
+          <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+        </section>
+        <section v-else>
+          <div v-if="loading">Loading...</div>
+          <div v-else class="row justify-content-around">
+            <analytics-tile title="User Count" description="Since November 2, 2018" v-bind:value="usercount"></analytics-tile>
+            <analytics-tile title="Play Count" description="Since November 6, 2018" v-bind:value="playcount"></analytics-tile>
+            <analytics-tile title="Most Used MC Version" description="Since November 6, 2018" v-bind:value="mcversion"></analytics-tile>
+            <analytics-tile title="Most Used Mod Version" description="Since November 6, 2018" v-bind:value="modversion"></analytics-tile>
+          </div>
+        </section>
     </b-container>
 </template>
 
 <script>
 import axios from 'axios'
+import AnalyticsTile from './AnalyticsTile.vue'
 
 export default {
   name: 'Analytics',
   title: 'Analytics - SignPicture',
+  components: {
+    'analytics-tile': AnalyticsTile
+  },
   data () {
     return {
+      loading: true,
+      errored: false,
       realtime: false,
-      playcount: 0
+      playcount: null,
+      usercount: null,
+      mcversion: null,
+      modversion: null
     }
   },
   mounted () {
     axios
-      .get('https://signpic.teamfruit.net/api/playcount')
+      .get('https://signpic.teamfruit.net/api/analytics')
       .then(response => {
-        this.playcount = response.data.count
+        this.usercount = response.data.usercount
+        this.playcount = response.data.playcount
+        this.mcversion = response.data.mcversion
+        this.modversion = response.data.modversion
         const ws = new WebSocket('wss://signpic.teamfruit.net/api/ws')
         ws.onopen = () => {
           this.realtime = true
         }
         ws.onerror = event => {
           this.realtime = false
+          this.errored = true
         }
         ws.onmessage = event => {
           console.log(event.data)
           const data = JSON.parse(event.data)
+          this.usercount = data.usercount
           this.playcount = data.playcount
+          this.mcversion = data.mcversion
+          this.modversion = data.modversion
         }
       })
-  },
-  filters: {
-    numfilter: value => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      .catch(error => {
+        console.log(error)
+        this.errored = true
+      })
+      .finally(() => (this.loading = false))
   }
 }
 </script>
 
-<style scoped>
-p {
-    margin: 0;
-}
+<style>
 
-.card {
-    width: 255px;
-    height: 147px;
-    box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 2px 2px -2px rgba(0,0,0,.02),0 1px 4px 0 rgba(0,0,0,.04);
-}
-
-.title {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-}
-
-.subtitle {
-    color: #6e6779;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 21px;
-}
-
-.text {
-    padding-top: 20px;
-    color: #6441a4;
-    font-weight: 600;
-    font-size: 28px;
-}
 </style>
