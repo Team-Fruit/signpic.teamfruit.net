@@ -49,6 +49,10 @@ export default {
         const ws = new WebSocket('wss://signpic.teamfruit.net/api/ws')
         ws.onopen = () => {
           this.realtime = true
+          console.log('Connected')
+        }
+        ws.onclose = (e) => {
+          this.realtime = false
         }
         ws.onerror = event => {
           this.realtime = false
