@@ -7,12 +7,15 @@
         </section>
         <section v-else>
           <div v-if="loading">Loading...</div>
-          <div v-else class="row justify-content-around">
-            <analytics-tile title="User Count" description="Since November 2, 2018" v-bind:value="usercount"></analytics-tile>
-            <analytics-tile title="Play Count" description="Since November 6, 2018" v-bind:value="playcount"></analytics-tile>
-            <analytics-tile title="Most Used MC Version" description="Since November 6, 2018" v-bind:value="mcversion"></analytics-tile>
-            <analytics-tile title="Most Used Mod Version" description="Since November 6, 2018" v-bind:value="modversion"></analytics-tile>
-          </div>
+          <section v-else>
+            <div class="row justify-content-around">
+              <analytics-tile title="User Count" description="Since November 2, 2018" v-bind:value="usercount"></analytics-tile>
+              <analytics-tile title="Play Count" description="Since November 6, 2018" v-bind:value="playcount"></analytics-tile>
+              <analytics-tile title="Most Used MC Version" description="Since November 6, 2018" v-bind:value="mcversion"></analytics-tile>
+              <analytics-tile title="Most Used Mod Version" description="Since November 6, 2018" v-bind:value="modversion"></analytics-tile>
+            </div>
+            <bar-chart id="chart" :chartData="chartData" :options="options" :height=300></bar-chart>
+          </section>
         </section>
     </b-container>
 </template>
@@ -20,12 +23,14 @@
 <script>
 import axios from 'axios'
 import AnalyticsTile from './AnalyticsTile.vue'
+import BarChart from './BarChart.vue'
 
 export default {
   name: 'Analytics',
   title: 'Analytics - SignPicture',
   components: {
-    'analytics-tile': AnalyticsTile
+    'analytics-tile': AnalyticsTile,
+    'bar-chart': BarChart
   },
   data () {
     return {
@@ -35,7 +40,59 @@ export default {
       playcount: null,
       usercount: null,
       mcversion: null,
-      modversion: null
+      modversion: null,
+      chartData: {
+        datasets: [{
+          backgroundColor: 'rgba(0,192,255,0.5)',
+          borderColor: 'rgba(0,192,255,0.5)',
+          yAxisID: 'y-axes-1',
+          label: 'New unique user per day',
+          data: []
+        },
+        {
+          backgroundColor: 'rgba(136,0,153,0.5)',
+          borderColor: 'rgba(136,0,153,0.3)',
+          yAxisID: 'y-axes-2',
+          type: 'line',
+          fill: false,
+          label: 'Toal unique user',
+          data: []
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+        scales: {
+          xAxes: [{
+            type: 'time',
+            time: {
+              displayFormats: {
+                quarter: 'yyyy-hh-mm'
+              }
+            }
+          }],
+          yAxes: [{
+            id: 'y-axes-1',
+            type: 'linear',
+            ticks: {
+              beginAtZero: true
+            }
+          },
+          {
+            id: 'y-axes-2',
+            type: 'linear',
+            position: 'right',
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        }
+      }
     }
   },
   mounted () {
@@ -46,9 +103,14 @@ export default {
         this.playcount = response.data.playcount
         this.mcversion = response.data.mcversion
         this.modversion = response.data.modversion
+        for (let line of response.data.user) {
+          this.chartData.datasets[0].data.push({t: line.date, y: line.count})
+          this.chartData.datasets[1].data.push({t: line.date, y: line.accum})
+        }
         const ws = new WebSocket('wss://signpic.teamfruit.net/api/ws')
         ws.onopen = () => {
           this.realtime = true
+          this.loading = false
           console.log('Connected')
         }
         ws.onclose = (e) => {
@@ -69,12 +131,15 @@ export default {
       .catch(error => {
         console.log(error)
         this.errored = true
+        this.loading = false
       })
-      .finally(() => (this.loading = false))
+      // .finally(() => (this.loading = false))
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+#chart {
+  margin-top: 1em;
+}
 </style>
