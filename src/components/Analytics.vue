@@ -55,7 +55,7 @@ export default {
           yAxisID: 'y-axes-2',
           type: 'line',
           fill: false,
-          label: 'Toal unique user',
+          label: 'Total unique user',
           data: []
         }]
       },
